@@ -32,6 +32,21 @@ In SQl haben wir die Tabellen:
     nachname VARCHAR(100) NOT NULL,
     geburtsdatum DATE
     );
+##### Verbindungstabelle Film und Schauspieler:
+    CREATE TABLE film_schauspieler (
+    film_id INTEGER NOT NULL,
+    schauspieler_id INTEGER NOT NULL,
+
+    PRIMARY KEY (film_id, schauspieler_id),
+
+    FOREIGN KEY (film_id)
+        REFERENCES filme(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (schauspieler_id)
+        REFERENCES schauspieler(id)
+        ON DELETE CASCADE
+);
 
 ##### In Java haben wir die Main.java mit dem Menü.
 Wir haben eine Klasse mit dem API Call.
