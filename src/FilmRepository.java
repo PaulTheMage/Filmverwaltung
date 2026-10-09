@@ -25,7 +25,6 @@ public class FilmRepository {
                        f.genre,
                        f.regisseur,
                        f.plot,
-                       f.poster,
                        COALESCE(
                            STRING_AGG(s.name, ', ' ORDER BY s.name),
                            ''
@@ -51,7 +50,6 @@ public class FilmRepository {
                         result.getString("genre"),
                         result.getString("regisseur"),
                         result.getString("plot"),
-                        result.getString("poster"),
                         parseSchauspieler(result.getString("schauspieler"))
                 );
 
@@ -79,8 +77,8 @@ public class FilmRepository {
 
     public int filmSpeichern(Film film) throws SQLException {
         String filmSql = """
-                INSERT INTO filme (imdb_id, titel, jahr, genre, regisseur, plot, poster)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO filme (imdb_id, titel, jahr, genre, regisseur, plot)
+                VALUES (?, ?, ?, ?, ?, ?)
                 RETURNING id
                 """;
 
@@ -95,11 +93,10 @@ public class FilmRepository {
 
                     statement.setString(1, film.getImdbId());
                     statement.setString(2, film.getTitel());
-                    statement.setString(3, film.getJahr());
+                    statement.setInt(3, Integer.parseInt(film.getJahr()));
                     statement.setString(4, film.getGenre());
                     statement.setString(5, film.getRegisseur());
                     statement.setString(6, film.getPlot());
-                    statement.setString(7, film.getPoster());
 
                     try (ResultSet result = statement.executeQuery()) {
                         if (!result.next()) {

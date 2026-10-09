@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public class Datenbank {
 
     private static final String URL =
-            "jdbc:postgresql://localhost:5432/filmverwaltung";
+            "jdbc:postgresql://localhost:5432/Filmverwaltung";
 
     private static final String BENUTZER = "postgres";
 

@@ -4,6 +4,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OmdbClient {
     private static final String API_KEY = "f9a21e05";
@@ -58,11 +62,10 @@ public class OmdbClient {
                 getJsonValue(json, "Genre"),
                 getJsonValue(json, "Director"),
                 getJsonValue(json, "Plot"),
-                getJsonValue(json, "Poster"),
                 parseSchauspieler(getJsonValue(json, "Actors"))
         );
     }
-}
+
 
 private String getJsonValue(String json, String key) {
     String patternText =

@@ -9,11 +9,10 @@ public class Film {
     private String genre;
     private String regisseur;
     private String plot;
-    private String poster;
     private List<String> schauspieler;
 
     public Film(String imdbId, String titel, String jahr, String genre,
-                String regisseur, String plot, String poster,
+                String regisseur, String plot,
                 List<String> schauspieler) {
         this.imdbId = imdbId;
         this.titel = titel;
@@ -21,7 +20,6 @@ public class Film {
         this.genre = genre;
         this.regisseur = regisseur;
         this.plot = plot;
-        this.poster = poster;
         this.schauspieler = schauspieler;
     }
     public int getId() {
@@ -56,9 +54,6 @@ public class Film {
         return plot;
     }
 
-    public String getPoster() {
-        return poster;
-    }
 
     public List<String> getSchauspieler() {
         return schauspieler;
@@ -72,7 +67,6 @@ public class Film {
                 + "\nRegisseur: " + regisseur
                 + "\nSchauspieler: " + String.join(", ", schauspieler == null ? List.of() : schauspieler)
                 + "\nBeschreibung: " + plot
-                + "\nIMDb-ID: " + imdbId
-                + "\nPoster: " + poster;
+                + "\nIMDb-ID: " + imdbId;
     }
 }
