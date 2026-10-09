@@ -1,3 +1,5 @@
+## Pseudocode für die Applikation
+
 In SQl haben wir die Tabellen:
 ##### Filme:
     CREATE TABLE filme (
@@ -59,7 +61,6 @@ Methoden:
     Filmbewertung eintragen:            bewertungEintragen
     Film löschen:                       filmLoeschen
 
-## Pseudocode für die Applikation
 ### Main.java:  
 Scanner erstellen damit der Benutzer Eingaben machen kann  
 Erstelle Menü   
