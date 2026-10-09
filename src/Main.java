@@ -56,3 +56,40 @@ public class Main {
             System.out.println("Fehler beim Laden der Filme: " + e.getMessage());
         }
     }
+    private static void filmHinzufuegen(
+            Scanner scanner,
+            FilmRepository repository,
+            OmdbClient omdbClient) {
+
+        System.out.print("Filmname / Suchbegriff: ");
+        String titel = scanner.nextLine().trim();
+
+        if (titel.isEmpty()) {
+            System.out.println("Bitte einen Filmtitel eingeben.");
+            return;
+        }
+
+        try {
+            Film film = omdbClient.sucheFilm(titel);
+
+            if (film == null) {
+                System.out.println("Film wurde bei OMDb nicht gefunden.");
+                return;
+            }
+
+            System.out.println();
+            System.out.println("Gefundener Film:");
+            System.out.println(film);
+
+            System.out.print("Film in Datenbank speichern? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                int filmId = repository.filmSpeichern(film);
+                System.out.println("Film gespeichert. ID: " + filmId);
+            } else {
+                System.out.println("Film wurde nicht gespeichert.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Fehler beim Hinzufügen: " + e.getMessage());
+        }
+    }
