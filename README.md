@@ -59,8 +59,8 @@ Methoden:
     Filmbewertung eintragen:            bewertungEintragen
     Film löschen:                       filmLoeschen
 
-##### Pseudocode für die Applikation
-Main.java:  
+## Pseudocode für die Applikation
+### Main.java:  
 Scanner erstellen damit der Benutzer Eingaben machen kann  
 Erstelle Menü   
 Lese User Input  
@@ -121,3 +121,22 @@ Lösche Verknüpfungen zu Schauspielern
 Gib "Film gelöscht" aus  
 Sonst: Löschen abbrechen  
 
+### OmdbClient.java
+Funktion SucheFilm(Suchbegriff)  
+Encode Suchbegriff für URL  
+Erstelle API-Adresse mit:  
+OMDb API-Key  
+Suchbegriff  
+Sende HTTP-Anfrage an OMDb  
+Empfange JSON-Antwort  
+Wenn Film nicht gefunden, gibt nichts zurück  
+Lese aus JSON  
+IMDb-ID  
+Titel  
+Jahr  
+Genre  
+Regisseur  
+Schauspieler  
+Beschreibung  
+Erstelle Film-Objekt  
+Gib Film-Objekt zurück  
