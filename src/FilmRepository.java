@@ -62,6 +62,7 @@ public class FilmRepository {
 
         return filme;
     }
+
     private List<String> parseSchauspieler(String text) {
         List<String> result = new ArrayList<>();
 
@@ -76,93 +77,93 @@ public class FilmRepository {
         return result;
     }
 
-public int filmSpeichern(Film film) throws SQLException {
-    String filmSql = """
+    public int filmSpeichern(Film film) throws SQLException {
+        String filmSql = """
                 INSERT INTO filme (imdb_id, titel, jahr, genre, regisseur, plot, poster)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 RETURNING id
                 """;
 
-    try (Connection connection = datenbank.getConnection()) {
-        connection.setAutoCommit(false);
+        try (Connection connection = datenbank.getConnection()) {
+            connection.setAutoCommit(false);
 
-        try {
-            int filmId;
+            try {
+                int filmId;
 
-            try (PreparedStatement statement =
-                         connection.prepareStatement(filmSql)) {
+                try (PreparedStatement statement =
+                             connection.prepareStatement(filmSql)) {
 
-                statement.setString(1, film.getImdbId());
-                statement.setString(2, film.getTitel());
-                statement.setString(3, film.getJahr());
-                statement.setString(4, film.getGenre());
-                statement.setString(5, film.getRegisseur());
-                statement.setString(6, film.getPlot());
-                statement.setString(7, film.getPoster());
+                    statement.setString(1, film.getImdbId());
+                    statement.setString(2, film.getTitel());
+                    statement.setString(3, film.getJahr());
+                    statement.setString(4, film.getGenre());
+                    statement.setString(5, film.getRegisseur());
+                    statement.setString(6, film.getPlot());
+                    statement.setString(7, film.getPoster());
 
-                try (ResultSet result = statement.executeQuery()) {
-                    if (!result.next()) {
-                        throw new SQLException("Film konnte nicht gespeichert werden.");
+                    try (ResultSet result = statement.executeQuery()) {
+                        if (!result.next()) {
+                            throw new SQLException("Film konnte nicht gespeichert werden.");
+                        }
+                        filmId = result.getInt("id");
                     }
-                    filmId = result.getInt("id");
                 }
-            }
 
-            String actorSql = """
+                String actorSql = """
                         INSERT INTO schauspieler (name)
                         VALUES (?)
                         ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
                         RETURNING id
                         """;
 
-            String linkSql = """
-                        INSERT INTO film_schauspieler (film_id, schauspieler_id)
+                String
+                        linkSql = """
+                         INSERT INTO film_schauspieler (film_id, schauspieler_id)
                         VALUES (?, ?)
                         ON CONFLICT DO NOTHING
                         """;
 
-            if (film.getSchauspieler() != null) {
-                for (String name : film.getSchauspieler()) {
-                    if (name == null || name.isBlank()) {
-                        continue;
-                    }
+                if (film.getSchauspieler() != null) {
+                    for (String name : film.getSchauspieler()) {
+                        if (name == null || name.isBlank()) {
+                            continue;
+                        }
 
-                    int actorId;
+                        int actorId;
 
-                    try (PreparedStatement actorStatement =
-                                 connection.prepareStatement(actorSql)) {
-                        actorStatement.setString(1, name.trim());
+                        try (PreparedStatement actorStatement =
+                                     connection.prepareStatement(actorSql)) {
+                            actorStatement.setString(1, name.trim());
 
-                        try (ResultSet result = actorStatement.executeQuery()) {
-                            if (!result.next()) {
-                                throw new SQLException(
-                                        "Schauspieler konnte nicht gespeichert werden.");
+                            try (ResultSet result = actorStatement.executeQuery()) {
+                                if (!result.next()) {
+                                    throw new SQLException(
+                                            "Schauspieler konnte nicht gespeichert werden.");
+                                }
+                                actorId = result.getInt("id");
                             }
-                            actorId = result.getInt("id");
+                        }
+
+                        try (PreparedStatement linkStatement =
+                                     connection.prepareStatement(linkSql)) {
+                            linkStatement.setInt(1, filmId);
+                            linkStatement.setInt(2, actorId);
+                            linkStatement.executeUpdate();
                         }
                     }
-
-                    try (PreparedStatement linkStatement =
-                                 connection.prepareStatement(linkSql)) {
-                        linkStatement.setInt(1, filmId);
-                        linkStatement.setInt(2, actorId);
-                        linkStatement.executeUpdate();
-                    }
                 }
+
+                connection.commit();
+                film.setId(filmId);
+                return filmId;
+
+            } catch (Exception e) {
+                connection.rollback();
+                if (e instanceof SQLException) {
+                    throw (SQLException) e;
+                }
+                throw new SQLException("Film konnte nicht gespeichert werden.", e);
             }
-
-            connection.commit();
-            film.setId(filmId);
-            return filmId;
-
-        } catch (Exception e) {
-            connection.rollback();
-
-            if (e instanceof SQLException) {
-                throw (SQLException) e;
-            }
-
-            throw new SQLException("Film konnte nicht gespeichert werden.", e);
         }
     }
-
+}

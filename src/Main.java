@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner =  new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         Datenbank datenbank = new Datenbank();
         FilmRepository repository = new FilmRepository(datenbank);
         OmdbClient omdbClient = new OmdbClient();
@@ -26,8 +26,8 @@ public class Main {
                 switch (auswahl) {
                     case "1" -> filmeAnsehen(repository);
                     case "2" -> filmHinzufuegen(scanner, repository, omdbClient);
-                    case "3" -> bewertungEintragen(scanner, repository);
-                    case "4" -> filmLoeschen(scanner, repository);
+                    //   case "3" -> bewertungEintragen(scanner, repository);
+                    //   case "4" -> filmLoeschen(scanner, repository);
                     case "5" -> {
                         System.out.println("Programm beendet.");
                         return;
@@ -35,10 +35,11 @@ public class Main {
                     default -> System.out.println("Ungültige Auswahl.");
                 }
             }
-        }finally {
+        } finally {
             scanner.close();
         }
     }
+
     private static void filmeAnsehen(FilmRepository repository) {
 
         try {
@@ -56,6 +57,7 @@ public class Main {
             System.out.println("Fehler beim Laden der Filme: " + e.getMessage());
         }
     }
+
     private static void filmHinzufuegen(
             Scanner scanner,
             FilmRepository repository,
@@ -93,3 +95,4 @@ public class Main {
             System.out.println("Fehler beim Hinzufügen: " + e.getMessage());
         }
     }
+}
