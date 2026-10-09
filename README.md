@@ -141,3 +141,31 @@ Schauspieler
 Beschreibung  
 Erstelle Film-Objekt  
 Gib Film-Objekt zurück  
+
+### FilmRepository.java
+Erhält Datenbankobjekt  
+Speichere das Datenbankobjekt in der Klasse  
+Verwende dieses Objekt für alle Datenbankzugriffe  
+##### Methode filmSpeichern(Film)
+SQL Anweisung zum Einfügen des Films in die Datenbank
+Stelle eine Verbindung zur Datenbank her  
+Führe die SQL-Anweisung aus und übergib die Filmdaten:  
+IMDb-ID  
+Titel  
+Erscheinungsjahr  
+Genre  
+Regisseur  
+Handlung  
+Ermittle die automatisch erzeugte Film-ID.  
+Prüfe, ob eine Film-ID zurückgegeben wurde.  
+Wenn nicht, löse einen Fehler aus.  
+Erstelle eine SQL-Anweisung zum Speichern eines Schauspielers.  
+Erstelle eine SQL-Anweisung, um einen Schauspieler einem Film zuzuordnen.  
+Prüfe, ob die Schauspielerliste vorhanden ist.  
+Durchlaufe alle Schauspielernamen:  
+- Überspringe Namen, die leer sind oder keinen gültigen Wert enthalten.  
+- Speichere den Schauspieler in der Tabelle schauspieler.  
+- Wenn der Schauspieler bereits existiert, verwende den vorhandenen Datensatz.  
+- Ermittle die Schauspieler-ID.  
+- Verknüpfe die Film-ID mit der Schauspieler-ID in film_schauspieler.  
+- Verhindere doppelte Zuordnungen.  
