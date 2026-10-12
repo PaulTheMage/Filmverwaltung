@@ -26,7 +26,7 @@ public class Main {
                 switch (auswahl) {
                     case "1" -> filmeAnsehen(repository);
                     case "2" -> filmHinzufuegen(scanner, repository, omdbClient);
-                    //   case "3" -> bewertungEintragen(scanner, repository);
+                    case "3" -> bewertungEintragen(scanner, repository);
                     //   case "4" -> filmLoeschen(scanner, repository);
                     case "5" -> {
                         System.out.println("Programm beendet.");
@@ -39,7 +39,36 @@ public class Main {
             scanner.close();
         }
     }
+    private static void bewertungEintragen(
+            Scanner scanner,
+            FilmRepository repository) {
 
+        try {
+            filmeAnsehen(repository);
+
+            System.out.print("\nFilm-ID: ");
+            int filmId = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Bewertung (1-5): ");
+            int sterne = Integer.parseInt(scanner.nextLine());
+
+            if (sterne < 1 || sterne > 5) {
+                System.out.println("Die Bewertung muss zwischen 1 und 5 liegen.");
+                return;
+            }
+
+            System.out.print("Kommentar (optional): ");
+            String kommentar = scanner.nextLine();
+
+            repository.bewertungSpeichern(filmId, sterne, kommentar);
+            System.out.println("Bewertung gespeichert.");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Bitte eine gültige Zahl eingeben.");
+        } catch (Exception e) {
+            System.out.println("Fehler beim Speichern der Bewertung: " + e.getMessage());
+        }
+    }
     private static void filmeAnsehen(FilmRepository repository) {
 
         try {
