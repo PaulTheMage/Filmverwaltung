@@ -9,17 +9,18 @@ public class Main {
         FilmRepository repository = new FilmRepository(datenbank);
         OmdbClient omdbClient = new OmdbClient();
 
-        System.out.println("=== Filmverwaltung ===");
+        System.out.println("\u001B[38;2;190;120;255m\u001B[1m"
+                + "=== Filmverwaltung ===" + "\u001B[0m");
 
         try {
             while (true) {
                 System.out.println();
-                System.out.println("1. Filme ansehen");
-                System.out.println("2. Film hinzufügen");
-                System.out.println("3. Filmbewertung eintragen");
-                System.out.println("4. Film löschen");
-                System.out.println("5. Beenden");
-                System.out.print("Auswahl: ");
+                System.out.println("\u001B[38;2;255;200;100m1. Filme ansehen\u001B[0m");
+                System.out.println("\u001B[38;2;255;200;100m2. Film hinzufügen\u001B[0m");
+                System.out.println("\u001B[38;2;255;200;100m3. Filmbewertung eintragen\u001B[0m");
+                System.out.println("\u001B[38;2;255;200;100m4. Film löschen\u001B[0m");
+                System.out.println("\u001B[38;2;255;200;100m5. Beenden\u001B[0m");
+                System.out.print("\u001B[38;2;70;220;210m\u001B[1mAuswahl:\u001B[0m ");
 
                 String auswahl = scanner.nextLine();
 
@@ -63,7 +64,6 @@ public class Main {
             System.out.println("Fehler beim Löschen: " + e.getMessage());
         }
     }
-}
     private static void bewertungEintragen(
             Scanner scanner,
             FilmRepository repository) {
@@ -149,4 +149,6 @@ public class Main {
             System.out.println("Fehler beim Hinzufügen: " + e.getMessage());
         }
     }
+
 }
+

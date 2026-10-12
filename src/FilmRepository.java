@@ -13,6 +13,21 @@ public class FilmRepository {
 
         this.datenbank = datenbank;
     }
+    public void filmLoeschen(int filmId) throws SQLException {
+        String sql = "DELETE FROM filme WHERE id = ?";
+
+        try (Connection connection = datenbank.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, filmId);
+
+            int rows = statement.executeUpdate();
+
+            if (rows == 0) {
+                System.out.println("Kein Film mit dieser ID gefunden.");
+            }
+        }
+    }
     public void bewertungSpeichern(
             int filmId,
             int sterne,
