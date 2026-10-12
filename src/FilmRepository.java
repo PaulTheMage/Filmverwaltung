@@ -13,7 +13,25 @@ public class FilmRepository {
 
         this.datenbank = datenbank;
     }
+    public void bewertungSpeichern(
+            int filmId,
+            int sterne,
+            String kommentar) throws SQLException {
 
+        String sql = """
+                INSERT INTO bewertungen (film_id, sterne, kommentar)
+                VALUES (?, ?, ?)
+                """;
+
+        try (Connection connection = datenbank.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, filmId);
+            statement.setInt(2, sterne);
+            statement.setString(3, kommentar);
+            statement.executeUpdate();
+        }
+    }
     public List<Film> alleFilme() throws SQLException {
         List<Film> filme = new ArrayList<>();
 

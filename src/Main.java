@@ -27,7 +27,7 @@ public class Main {
                     case "1" -> filmeAnsehen(repository);
                     case "2" -> filmHinzufuegen(scanner, repository, omdbClient);
                     case "3" -> bewertungEintragen(scanner, repository);
-                    //   case "4" -> filmLoeschen(scanner, repository);
+                    case "4" -> filmLoeschen(scanner, repository);
                     case "5" -> {
                         System.out.println("Programm beendet.");
                         return;
@@ -39,6 +39,31 @@ public class Main {
             scanner.close();
         }
     }
+    private static void filmLoeschen(
+            Scanner scanner,
+            FilmRepository repository) {
+
+        try {
+            filmeAnsehen(repository);
+
+            System.out.print("\nFilm-ID zum Löschen: ");
+            int filmId = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Wirklich löschen? (j/n): ");
+            if (scanner.nextLine().equalsIgnoreCase("j")) {
+                repository.filmLoeschen(filmId);
+                System.out.println("Film gelöscht.");
+            } else {
+                System.out.println("Löschen abgebrochen.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Bitte eine gültige Film-ID eingeben.");
+        } catch (Exception e) {
+            System.out.println("Fehler beim Löschen: " + e.getMessage());
+        }
+    }
+}
     private static void bewertungEintragen(
             Scanner scanner,
             FilmRepository repository) {
