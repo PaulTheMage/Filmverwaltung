@@ -98,6 +98,7 @@ public class Main {
 
         try {
             List<Film> filme = repository.alleFilme();
+
             if (filme.isEmpty()) {
                 System.out.println("Keine Filme vorhanden.");
                 return;
@@ -106,9 +107,27 @@ public class Main {
             for (Film film : filme) {
                 System.out.println();
                 System.out.println(film);
+
+                System.out.println("\u001B[38;2;70;220;210m"
+                        + "  Bewertungen:"
+                        + "\u001B[0m");
+
+                List<String> bewertungen =
+                        repository.bewertungenFuerFilm(film.getId());
+
+                if (bewertungen.isEmpty()) {
+                    System.out.println(
+                            "  Noch keine Bewertungen vorhanden.");
+                } else {
+                    for (String bewertung : bewertungen) {
+                        System.out.println("  " + bewertung);
+                    }
+                }
             }
+
         } catch (Exception e) {
-            System.out.println("Fehler beim Laden der Filme: " + e.getMessage());
+            System.out.println(
+                    "Fehler beim Laden der Filme: " + e.getMessage());
         }
     }
 

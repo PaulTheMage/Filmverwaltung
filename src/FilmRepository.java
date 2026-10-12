@@ -47,6 +47,49 @@ public class FilmRepository {
             statement.executeUpdate();
         }
     }
+    public List<String> bewertungenFuerFilm(int filmId)
+            throws SQLException {
+
+        List<String> bewertungen = new ArrayList<>();
+
+        String sql = """
+            SELECT sterne, kommentar
+            FROM bewertungen
+            WHERE film_id = ?
+            ORDER BY sterne DESC
+            """;
+
+        try (Connection connection = datenbank.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, filmId);
+
+            try (ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+
+                    int sterne = result.getInt("sterne");
+                    String kommentar = result.getString("kommentar");
+
+                    String sterneAnzeige =
+                            "★".repeat(sterne)
+                                    + "☆".repeat(Math.max(0, 5 - sterne));
+
+                    if (kommentar == null || kommentar.isBlank()) {
+                        kommentar = "Kein Kommentar";
+                    }
+
+                    String bewertung = sterneAnzeige
+                            + " (" + sterne + "/5) – "
+                            + kommentar;
+
+                    bewertungen.add(bewertung);
+                }
+            }
+        }
+
+        return bewertungen;
+    }
+
     public List<Film> alleFilme() throws SQLException {
         List<Film> filme = new ArrayList<>();
 
